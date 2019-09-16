@@ -1,0 +1,102 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> binKods </title>
+<style>
+   .laukums {
+    display: table;
+    border-collapse: collapse;
+  }
+  .rinda{
+    display: table-row;
+  }
+
+  .skaitlis {
+    display: table-cell;
+    background-color:green;
+    border: 1px solid #333333;
+    text-align:center;
+    vertical-align:middle;
+    height: 50px;
+    width: 50px;
+  }
+ </style>
+ </head>
+ <body id="spele" onload="sakums();">
+ <script>
+    let bin=["100","101","110","111","000","001","010","011"];
+    let dec=[-4,-3,-2,-1,0,1,2,3];
+    let saraksts=[];
+    let cikKl=0;
+    let pirmais,otrais;
+    let atlauts=true;
+    function izveido(){
+         for(let i=0;i<bin.length;i++){
+            saraksts.push(bin[i]);
+            saraksts.push(dec[i]);
+        }
+    }
+    function sajauc(){
+        for(let i=0;i<10;i++){
+            let x=Math.floor(16*Math.random());
+            saraksts.push(saraksts[x]);
+            saraksts.splice(x,1);
+        }
+    }
+    function parada(){
+        let divs = document.createElement("DIV"); divs.className="laukums";
+        for(let i=0;i<4;i++){
+            let divR = document.createElement("DIV"); divR.className="rinda";
+            for(let j=0;j<4;j++){
+                let divK = document.createElement("DIV");
+                let sk = document.createElement("P");
+                sk.innerHTML=saraksts[i*4+j]; sk.style.display="none";
+                divK.className="skaitlis";
+                divK.appendChild(sk);
+                divK.addEventListener("click",klik);
+                function klik(){
+                    if(atlauts)paraditSkaitli(sk);
+                }
+                divR.appendChild(divK);
+            }
+            divs.appendChild(divR);
+        }   
+        document.getElementById("spele").appendChild(divs);
+    }
+    function paraditSkaitli(sk){
+        sk.style.display="block";
+        if(cikKl%2==0){
+            pirmais=sk;
+        }else{
+            otrais=sk;
+            if(parbauda(pirmais,otrais)){
+                otrais.style.display="block";
+            }else{
+                atlauts=false;
+                setTimeout(function(){
+                    pirmais.style.display="none";
+                    otrais.style.display="none";
+                    atlauts=true;
+                    },1000);
+                }
+        }
+        cikKl++;
+    }
+    function parbauda(p,o){
+        let x=p.innerHTML; let y=o.innerHTML;
+        if(y.length==3&&x.length!=3&&bin[Number(x)+4]==y){
+            return true;
+        }else if(x.length==3&&y.length!=3&&bin[Number(y)+4]==x){
+            return true;
+        }
+        return false;
+    }
+
+    function sakums(){
+        izveido();
+        sajauc();
+        parada();
+    }
+</script>
+</body>
+</html>
