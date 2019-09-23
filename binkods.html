@@ -23,7 +23,7 @@
   }
   
   .laiks {
-    text-weight: bold;
+    font-weight: bold;
   }
  </style>
  </head>
@@ -35,7 +35,7 @@
     let cikKl=0;
     let pirmais,otrais;
     let atlauts=true;
-    let laiks = 5; // cik ilgi notiks spēle
+    let laiks = 15; // cik ilgi notiks spēle
     function izveido(){
          for(let i=0;i<bin.length;i++){
             saraksts.push(bin[i]);
@@ -61,7 +61,7 @@
                 divK.appendChild(sk);
                 divK.addEventListener("click",klik);
                 function klik(){
-                    if(atlauts)paraditSkaitli(sk);
+                    if(atlauts && laiks>= 0)paraditSkaitli(sk);
                 }
                 divR.appendChild(divK);
             }
