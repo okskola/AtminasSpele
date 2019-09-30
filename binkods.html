@@ -1,7 +1,7 @@
-<!DOCTYPE html> <!-- html5 jāsākas ar šo -->
-<html>
+<!DOCTYPE html>
+<html lang="lv">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title> binKods </title>
 <style>
    .laukums {
@@ -22,7 +22,7 @@
     width: 50px;
   }
   
-  .laiks {
+  .laiks, .punkti {
     font-weight: bold;
   }
  </style>
@@ -35,7 +35,8 @@
     let cikKl=0;
     let pirmais,otrais;
     let atlauts=true;
-    let laiks = 15; // cik ilgi notiks spēle
+    let laiks = 60; // cik ilgi notiks spēle
+    let punkti = 0;
     function izveido(){
          for(let i=0;i<bin.length;i++){
             saraksts.push(bin[i]);
@@ -75,6 +76,21 @@
         pLaiks.className="laiks";
         pLaiks.innerText = "Laiks:" + laiks;
         document.getElementById("spele").appendChild(pLaiks);
+
+        // pievieno punktus uz ekrāna
+        let pPunkti = document.createElement("p");
+        pPunkti.id = "idPunkti";
+        pPunkti.className="punkti";
+        pPunkti.innerText = "Punkti:" + punkti;
+        document.getElementById("spele").appendChild(pPunkti);
+    }
+    function pieskaitaPunktu() {
+        punkti = punkti+1;
+        if( punkti < 8 ) {
+            document.getElementById("idPunkti").innerText = "Punkti:" + punkti;
+        } else {
+            document.getElementById("idPunkti").innerText = "Uzvara!";
+        }
     }
     function paraditSkaitli(sk){
         sk.style.display="block";
@@ -84,6 +100,7 @@
             otrais=sk;
             if(parbauda(pirmais,otrais)){
                 otrais.style.display="block";
+                pieskaitaPunktu();           
             }else{
                 atlauts=false;
                 setTimeout(function(){
@@ -109,7 +126,9 @@
         laiks--;
         if( laiks >= 0 ) {
             document.getElementById("idLaiks").innerText = "Laiks:" + laiks;
-            setTimeout( taimeris, 1000 );
+            if( punkti < 8 ) {
+                setTimeout( taimeris, 1000 );
+            }
         } else {
             document.getElementById("idLaiks").innerText = "Laiks beidzies";
         }
