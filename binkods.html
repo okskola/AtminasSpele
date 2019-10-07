@@ -18,8 +18,8 @@
     border: 1px solid #333333;
     text-align:center;
     vertical-align:middle;
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
   }
   
   .laiks {
@@ -35,7 +35,7 @@
     let cikKl=0;
     let pirmais,otrais;
     let atlauts=true;
-    let laiks = 15; // cik ilgi notiks spēle
+    let laiks = 60; // cik ilgi notiks spēle
     function izveido(){
          for(let i=0;i<bin.length;i++){
             saraksts.push(bin[i]);
@@ -55,8 +55,9 @@
             let divR = document.createElement("DIV"); divR.className="rinda";
             for(let j=0;j<4;j++){
                 let divK = document.createElement("DIV");
-                let sk = document.createElement("P");
-                sk.innerHTML=saraksts[i*4+j]; sk.style.display="none";
+                let sk = document.createElement("IMG");
+                sk.src="b"+saraksts[i*4+j]+".jpg"; 
+                sk.style.display="none";
                 divK.className="skaitlis";
                 divK.appendChild(sk);
                 divK.addEventListener("click",klik);
@@ -95,7 +96,7 @@
         }
         cikKl++;
     }
-    function parbauda(p,o){
+    function parbauda1(p,o){
         let x=p.innerHTML; let y=o.innerHTML;
         if(y.length==3&&x.length!=3&&bin[Number(x)+4]==y){
             return true;
@@ -104,7 +105,18 @@
         }
         return false;
     }
-    
+    function parbauda(p,o){
+        let xs=p.src;
+        let x=xs.substring(xs.indexOf("b")+1,xs.indexOf(".")); 
+        let ys=o.src;
+        let y=ys.substring(ys.indexOf("b")+1,ys.indexOf("."));
+        if(y.length==3&&x.length!=3&&bin[Number(x)+4]==y){
+            return true;
+        }else if(x.length==3&&y.length!=3&&bin[Number(y)+4]==x){
+            return true;
+        }
+        return false;
+    }
     function taimeris() {
         laiks--;
         if( laiks >= 0 ) {
