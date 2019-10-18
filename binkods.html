@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html lang="lv">
+<!DOCTYPE html> <!-- html5 jāsākas ar šo -->
+<html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title> binKods </title>
 <style>
    .laukums {
@@ -11,17 +11,18 @@
   .rinda{
     display: table-row;
   }
+
   .skaitlis {
     display: table-cell;
     background-color:green;
     border: 1px solid #333333;
     text-align:center;
     vertical-align:middle;
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
   }
   
-  .laiks, .punkti {
+  .laiks {
     font-weight: bold;
   }
  </style>
@@ -35,7 +36,6 @@
     let pirmais,otrais;
     let atlauts=true;
     let laiks = 60; // cik ilgi notiks spēle
-    let punkti = 0;
     function izveido(){
          for(let i=0;i<bin.length;i++){
             saraksts.push(bin[i]);
@@ -55,8 +55,9 @@
             let divR = document.createElement("DIV"); divR.className="rinda";
             for(let j=0;j<4;j++){
                 let divK = document.createElement("DIV");
-                let sk = document.createElement("P");
-                sk.innerHTML=saraksts[i*4+j]; sk.style.display="none";
+                let sk = document.createElement("IMG");
+                sk.src="b"+saraksts[i*4+j]+".jpg"; 
+                sk.style.display="none";
                 divK.className="skaitlis";
                 divK.appendChild(sk);
                 divK.addEventListener("click",klik);
@@ -75,20 +76,6 @@
         pLaiks.className="laiks";
         pLaiks.innerText = "Laiks:" + laiks;
         document.getElementById("spele").appendChild(pLaiks);
-        // pievieno punktus uz ekrāna
-        let pPunkti = document.createElement("p");
-        pPunkti.id = "idPunkti";
-        pPunkti.className="punkti";
-        pPunkti.innerText = "Punkti:" + punkti;
-        document.getElementById("spele").appendChild(pPunkti);
-    }
-    function pieskaitaPunktu() {
-        punkti = punkti+1;
-        if( punkti < 8 ) {
-            document.getElementById("idPunkti").innerText = "Punkti:" + punkti;
-        } else {
-            document.getElementById("idPunkti").innerText = "Uzvara!";
-        }
     }
     function paraditSkaitli(sk){
         sk.style.display="block";
@@ -98,7 +85,6 @@
             otrais=sk;
             if(parbauda(pirmais,otrais)){
                 otrais.style.display="block";
-                pieskaitaPunktu();           
             }else{
                 atlauts=false;
                 setTimeout(function(){
@@ -110,7 +96,7 @@
         }
         cikKl++;
     }
-    function parbauda(p,o){
+    function parbauda1(p,o){
         let x=p.innerHTML; let y=o.innerHTML;
         if(y.length==3&&x.length!=3&&bin[Number(x)+4]==y){
             return true;
@@ -119,18 +105,28 @@
         }
         return false;
     }
-    
+    function parbauda(p,o){
+        let xs=p.src;
+        let x=xs.substring(xs.indexOf("b")+1,xs.indexOf(".")); 
+        let ys=o.src;
+        let y=ys.substring(ys.indexOf("b")+1,ys.indexOf("."));
+        if(y.length==3&&x.length!=3&&bin[Number(x)+4]==y){
+            return true;
+        }else if(x.length==3&&y.length!=3&&bin[Number(y)+4]==x){
+            return true;
+        }
+        return false;
+    }
     function taimeris() {
         laiks--;
         if( laiks >= 0 ) {
             document.getElementById("idLaiks").innerText = "Laiks:" + laiks;
-            if( punkti < 8 ) {
-                setTimeout( taimeris, 1000 );
-            }
+            setTimeout( taimeris, 1000 );
         } else {
             document.getElementById("idLaiks").innerText = "Laiks beidzies";
         }
     }
+
     function sakums(){
         izveido();
         sajauc();
@@ -140,4 +136,3 @@
 </script>
 </body>
 </html>
-
